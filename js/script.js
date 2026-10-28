@@ -786,7 +786,7 @@ function displayReport(totals) {
     addReportHeading(content, "Litres Sold and Sales Per Pump");
     content.appendChild(buildPumpTable());
 
-    addReportHeading(content, "Station Totals");
+    addReportHeading(content, "Totals");
 
     const summary = makeElement("div", "", "summary-list");
 
