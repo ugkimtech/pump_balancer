@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Know Your Cash | Pump Balancing</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/script.js" defer></script>
+</head>
+
+<body>
+    <main class="app">
+
+        <header class="app-header">
+            <div class="brand-icon">KC</div>
+            <div>
+                <h1>Know Your Cash</h1>
+                <p>Fuel Station Balancing System</p>
+            </div>
+        </header>
+
+        <div id="message" class="message" role="status" aria-live="polite" hidden></div>
+
+        <!-- STEP 1: FUEL PRICES AND PUMPS -->
+        <section id="pump-step" class="panel">
+            <div class="section-heading">
+                <div>
+                    <span class="step-label">STEP 1</span>
+                    <h2>Pump Readings</h2>
+                    <p>Enter the meter readings for each pump.</p>
+
+                    <p class="hint">
+                        Enter the current selling prices. You only need a price
+                        for the fuel types sold by your pumps.
+                    </p>
+                </div>
+                <span class="step-icon">01</span>
+            </div>
+
+            <div class="price-grid">
+                <div class="field">
+                    <label for="pms-price">PMS price per litre (UGX)</label>
+                    <input
+                        id="pms-price"
+                        type="number"
+                        min="0.01"
+                        step="any"
+                        placeholder="e.g. 5000"
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="ago-price">AGO price per litre (UGX)</label>
+                    <input
+                        id="ago-price"
+                        type="number"
+                        min="0.01"
+                        step="any"
+                        placeholder="e.g. 4800"
+                    >
+                </div>
+            </div>
+
+            <hr>
+
+            <form id="pump-form">
+                <div class="field">
+                    <label for="pump-no">Pump number</label>
+                    <input
+                        id="pump-no"
+                        name="pump-no"
+                        type="number"
+                        min="1"
+                        step="1"
+                        placeholder="e.g. 1"
+                    >
+                </div>
+
+                <fieldset class="fuel-selection">
+                    <legend>Fuel types sold by this pump</legend>
+
+                    <label class="check-option">
+                        <input type="checkbox" id="use-pms" checked>
+                        <span>PMS (Petrol)</span>
+                    </label>
+
+                    <label class="check-option">
+                        <input type="checkbox" id="use-ago" checked>
+                        <span>AGO (Diesel)</span>
+                    </label>
+                </fieldset>
+
+                <div id="pms-fields" class="fuel-card pms-card">
+                    <div class="fuel-title">
+                        <span class="fuel-dot pms-dot"></span>
+                        <h3>PMS</h3>
+                        <span class="fuel-name">Petrol</span>
+                    </div>
+
+                    <div class="field-grid">
+                        <div class="field">
+                            <label for="pms-opening">Opening litres</label>
+                            <input
+                                id="pms-opening"
+                                name="pms-opening"
+                                type="number"
+                                min="0"
+                                step="any"
+                                placeholder="Opening reading"
+                            >
+                        </div>
+
+                        <div class="field">
+                            <label for="pms-closing">Closing litres</label>
+                            <input
+                                id="pms-closing"
+                                name="pms-closing"
+                                type="number"
+                                min="0"
+                                step="any"
+                                placeholder="Closing reading"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ago-fields" class="fuel-card ago-card">
+                    <div class="fuel-title">
+                        <span class="fuel-dot ago-dot"></span>
+                        <h3>AGO</h3>
+                        <span class="fuel-name">Diesel</span>
+                    </div>
+
+                    <div class="field-grid">
+                        <div class="field">
+                            <label for="ago-opening">Opening litres</label>
+                            <input
+                                id="ago-opening"
+                                name="ago-opening"
+                                type="number"
+                                min="0"
+                                step="any"
+                                placeholder="Opening reading"
+                            >
+                        </div>
+
+                        <div class="field">
+                            <label for="ago-closing">Closing litres</label>
+                            <input
+                                id="ago-closing"
+                                name="ago-closing"
+                                type="number"
+                                min="0"
+                                step="any"
+                                placeholder="Closing reading"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" id="add-pump" class="btn btn-primary btn-full">
+                    + Add Pump
+                </button>
+            </form>
+
+            <div class="saved-section">
+                <div class="saved-heading">
+                    <h3>Recorded Pumps</h3>
+                    <span id="pump-count" class="count-badge">0 pumps</span>
+                </div>
+
+                <div id="pump-list" class="pump-list">
+                    <p class="empty-state">No pumps recorded yet.</p>
+                </div>
+            </div>
+
+            <button type="button" id="next-step" class="btn btn-dark btn-full">
+                Continue to Cash Balancing →
+            </button>
+        </section>
+
+        <!-- STEP 2: DROPS AND TRANSACTIONS -->
+        <section id="cash-step" class="panel" hidden>
+            <div class="section-heading">
+                <div>
+                    <span class="step-label">STEP 2</span>
+                    <h2>Drops & Transactions</h2>
+                    <p>Record drops and each transaction collected.</p>
+                </div>
+                <span class="step-icon">02</span>
+            </div>
+
+            <div class="drop-card">
+                <h3>Cash Drops</h3>
+                <p>Each drop is valued at <strong>UGX 300,000</strong>.</p>
+
+                <div class="field">
+                    <label for="drops">Number of drops</label>
+                    <input
+                        id="drops"
+                        type="number"
+                        min="0"
+                        step="1"
+                        placeholder="Enter number of drops"
+                    >
+                </div>
+
+                <div class="calculated-row">
+                    <span>Total drops amount</span>
+                    <strong id="drops-total">UGX 0</strong>
+                </div>
+            </div>
+
+            <div class="transaction-card">
+                <h3>Transactions</h3>
+                <p>Enter each transaction amount separately.</p>
+
+                <div class="field">
+                    <label for="txn">Transaction amount (UGX)</label>
+                    <input
+                        id="txn"
+                        type="number"
+                        min="0.01"
+                        step="any"
+                        placeholder="e.g. 50000"
+                    >
+                </div>
+
+                <button type="button" id="add-txn" class="btn btn-success btn-full">
+                    + Add Transaction
+                </button>
+
+                <div class="saved-heading transaction-heading">
+                    <h3>Recorded Transactions</h3>
+                    <span id="txn-count" class="count-badge">0 transactions</span>
+                </div>
+
+                <div id="transaction-list" class="transaction-list">
+                    <p class="empty-state">No transactions recorded yet.</p>
+                </div>
+
+                <div class="calculated-row transaction-total">
+                    <span>Total transactions</span>
+                    <strong id="txn-total">UGX 0</strong>
+                </div>
+            </div>
+
+            <div class="button-row">
+                <button type="button" id="back-step" class="btn btn-light">
+                    ← Back to Pumps
+                </button>
+
+                <button type="button" id="finish" class="btn btn-primary">
+                    Finish Balancing
+                </button>
+            </div>
+        </section>
+
+        <!-- STEP 3: FINAL REPORT -->
+        <section id="report-step" class="panel" hidden>
+            <div class="report-header">
+                <div>
+                    <span class="step-label">FINAL REPORT</span>
+                    <h2>Cash Balancing Report</h2>
+                    <p id="report-date"></p>
+                </div>
+                <span class="report-symbol">✓</span>
+            </div>
+
+            <div id="report-content"></div>
+
+            <div class="report-actions">
+                <button type="button" id="print-report" class="btn btn-dark">
+                    Print Report
+                </button>
+
+                <button type="button" id="new-session" class="btn btn-primary">
+                    New Balancing Session
+                </button>
+            </div>
+        </section>
+
+        <footer>
+            <p>Know Your Cash · Fuel Station Balancing</p>
+        </footer>
+
+    </main>
+</body>
+</html>
